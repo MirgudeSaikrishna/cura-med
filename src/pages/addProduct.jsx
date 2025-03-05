@@ -1,8 +1,9 @@
 import React,{useEffect,useState} from 'react';
 const Sproduct=()=>{
-    const [name,setname]=useState([]);
-    const [price,setprice]=useState([]);
-    const [description,setdescription]=useState([]);
+    const [name,setname]=useState('');
+    const [price,setprice]=useState('');
+    const [description,setdescription]=useState('');
+    const shopName=localStorage.getItem('shopName')
     async function addProduct(event){
         event.preventDefault()
         const response=await fetch('http://localhost:1337/api/addproduct',{
@@ -14,12 +15,14 @@ const Sproduct=()=>{
             body:JSON.stringify({
                 name,
                 price,
-                description
+                description,
+                seller:shopName
             })
         })
         const data=await response.json()
         if(data.status==='ok'){
             alert('Product added')
+            window.location.href = '/Seller_view';
         }else{
             alert(data.error)
         }

@@ -18,11 +18,16 @@ const User_view=()=>{
         }
         getdata()
     },[])
+
     return(
         <div>
             <h1>Sellers</h1>
             <ul>
-                {sellers.map(seller=><li key={seller.id}>{seller.shopName} {seller.email} {seller.phone} {seller.address}</li>)}
+                {sellers.map(seller=>(<li key={seller._id}>{seller.shopName} {seller.email} {seller.phone} {seller.address}
+                    <input type="button" onClick={()=>{localStorage.setItem('shopName',seller.shopName);
+                        window.location.href='/Uproduct'
+                    }} value="View Products"/>
+                </li>))}
                 <input type="button"onClick={()=>{localStorage.removeItem('token');window.location.href='/login'}} value="logout"/>
             </ul>
         </div>
