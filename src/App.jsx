@@ -8,6 +8,7 @@ import User_view from './pages/User_view'
 import Seller_view from './pages/Seller_view'
 import  Uproduct from './pages/Uproduct'
 import Sproduct from './pages/addProduct'
+import './App.css'
 const App=()=>{
     return(
         <BrowserRouter>

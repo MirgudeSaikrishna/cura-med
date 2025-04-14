@@ -49,7 +49,15 @@ const Uproduct=()=> {
             <input type="text" value={searchdata} onChange={(e)=>setSearchdata(e.target.value)} placeholder="Search"/>
             <ul>
                 {currentProducts.map((product,index)=>(
-                    <li key={product._id}>{product.name} {product.price} {product.description}</li>
+                    
+                    <li key={product._id}>
+                        {product.image && (
+                        <img
+                        src={`http://localhost:1337${product.image}`}
+                        alt={product.name}
+                        style={{ width: '100%', height: '150px', objectFit: 'cover' }}
+                        />
+                        )}{product.name} {product.price} {product.description}</li>
                 ))}
             </ul>
             <div>{ pageNumbers.map((number)=>(
