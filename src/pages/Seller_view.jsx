@@ -38,6 +38,8 @@ const Seller_view = () => {
       localStorage.setItem('shopName', data.seller.shopName);
     } else {
       alert(data.error);
+      localStorage.removeItem('token');
+      window.location.href = '/login';
     }
   }
 
