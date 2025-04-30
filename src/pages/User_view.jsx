@@ -87,12 +87,6 @@ const User_view = () => {
                 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
               >
                 <div className="h-40 bg-gradient-to-r from-teal-400 to-green-400 overflow-hidden relative">
-                  <img 
-                    src={`/api/placeholder/800/600?text=${seller.shopName}`}
-                    alt={seller.shopName} 
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 
-                    group-hover:scale-110 transition-all duration-500"
-                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 p-4">
                     <h3 className="text-white text-xl font-bold">{seller.shopName}</h3>
