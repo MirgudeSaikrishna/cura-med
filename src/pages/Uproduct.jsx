@@ -1,4 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
 
 const Uproduct = () => {
   const [products, setProducts] = useState([]);
@@ -8,6 +22,7 @@ const Uproduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
   const [productsPerPage] = useState(6);
+  const [location, setLocation] = useState(null); 
   const [searchdata, setSearchdata] = useState('');
 
   useEffect(() => {
@@ -29,6 +44,7 @@ const Uproduct = () => {
             alert('No products found');
           }
           setProducts(data.products);
+          setLocation(data.location);
         } else {
           alert(data.error);
         }
@@ -79,6 +95,27 @@ const Uproduct = () => {
         <div className="absolute top-1/3 right-1/3 w-20 h-20 rounded-full bg-emerald-300 opacity-30 animate-ping"></div>
       </div>
       
+      {location && location.location.coordinates && (
+        <MapContainer
+          center={[location.location.coordinates[1], location.location.coordinates[0]]} // Note: Latitude comes first, then longitude
+          zoom={13}
+          style={{ height: '400px', width: '100%' }}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker position={[location.location.coordinates[1], location.location.coordinates[0]]}>
+          <Popup>
+            <strong>{shopName}</strong><br />
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${location.location.coordinates[1]},${location.location.coordinates[0]}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              📍 Navigate with Google Maps
+            </a>
+          </Popup>
+          </Marker>
+        </MapContainer>
+      )}
       <div 
         id="uproduct-container"
         className={`max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-8 backdrop-blur-lg bg-opacity-80 

@@ -8,11 +8,33 @@ const Sregister = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [coords, setCoords] = useState({ latitude: null, longitude: null });
+  const [status, setStatus] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus('Geolocation is not supported by your browser');
+      return;
+    }
+    setStatus('Locating...');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        setStatus('Location captured!');
+      },
+      () => {
+        setStatus('Unable to retrieve your location');
+      }
+    );
+  };
 
   async function registerUser(event) {
     event.preventDefault();
@@ -28,7 +50,9 @@ const Sregister = () => {
             email,
             password,
             phone,
-            address
+            address,
+            latitude: coords.latitude,
+            longitude: coords.longitude,
           }
         })
       });
@@ -141,6 +165,15 @@ const Sregister = () => {
             />
             <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-500 to-green-500 transform origin-left scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 w-full"></div>
           </div>
+
+          <button onClick={getLocation}>📍 Get Current Location</button>
+          {coords.latitude && (
+            <div>
+              <p>Latitude: {coords.latitude}</p>
+              <p>Longitude: {coords.longitude}</p>
+            </div>
+          )}
+          <p>{status}</p>
           
           <button
             type="submit"
