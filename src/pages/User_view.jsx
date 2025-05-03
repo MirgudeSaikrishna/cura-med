@@ -29,8 +29,8 @@ const User_view = () => {
   }, []);
 
   const handleViewProducts = (shopName) => {
-    localStorage.setItem('shopName', shopName);
-    window.location.href = '/Uproduct';
+    // localStorage.setItem('shopName', shopName);
+    window.location.href = `/Uproduct/${shopName}`;
   };
 
   const handleLogout = () => {

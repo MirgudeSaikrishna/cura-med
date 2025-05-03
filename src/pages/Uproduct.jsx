@@ -5,6 +5,7 @@ import L from 'leaflet';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { useParams } from 'react-router-dom';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -18,24 +19,24 @@ const Uproduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const shopName = localStorage.getItem('shopName');
+  // const shopName = localStorage.getItem('shopName');
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
   const [productsPerPage] = useState(6);
   const [location, setLocation] = useState(null); 
   const [searchdata, setSearchdata] = useState('');
+  const {shopName}=useParams();
 
   useEffect(() => {
     setMounted(true);
-    
     async function getProducts() {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:1337/api/products', {
+        const response = await fetch(`http://localhost:1337/api/products/${shopName}`, {
           method: 'GET',
           headers: {
             'x-access-token': localStorage.getItem('token'),
-            'shop-name': shopName,
+            // 'shop-name': shopName,
           },
         });
         const data = await response.json();

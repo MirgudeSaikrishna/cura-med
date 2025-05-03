@@ -19,7 +19,7 @@ const App=()=>{
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/User_view" element={<User_view/>}/>
                     <Route path="/Seller_view" element={<Seller_view/>}/>
-                    <Route path="/Uproduct" element={<Uproduct/>} />
+                    <Route path="/Uproduct/:shopName" element={<Uproduct/>} />
                     <Route path="/addProduct" element={<Sproduct/>}/>
             </Routes>
         </BrowserRouter>
