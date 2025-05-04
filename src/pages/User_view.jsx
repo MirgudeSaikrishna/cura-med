@@ -60,7 +60,16 @@ const User_view = () => {
             </h1>
             <p className="text-lg text-gray-600">Find the right provider for your needs</p>
           </div>
-          
+          <button 
+            onClick={()=>window.location.href='/nearest'}
+            className="bg-gradient-to-r from-teal-500 to-green-500 text-white py-2 px-6 rounded-xl shadow-lg hover:shadow-xl
+            transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h18v18H3V3z" />
+            </svg>
+            Nearest Providers
+          </button>
           <button
             onClick={handleLogout}
             className="bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 px-6 rounded-xl shadow-lg hover:shadow-xl 

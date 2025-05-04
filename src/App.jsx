@@ -8,6 +8,7 @@ import User_view from './pages/User_view'
 import Seller_view from './pages/Seller_view'
 import  Uproduct from './pages/Uproduct'
 import Sproduct from './pages/addProduct'
+import Nearest from './pages/nearest_providers'
 import './App.css'
 const App=()=>{
     return(
@@ -21,6 +22,7 @@ const App=()=>{
                     <Route path="/Seller_view" element={<Seller_view/>}/>
                     <Route path="/Uproduct/:shopName" element={<Uproduct/>} />
                     <Route path="/addProduct" element={<Sproduct/>}/>
+                    <Route path="/nearest" element={<Nearest/>}/>
             </Routes>
         </BrowserRouter>
     )
