@@ -14,6 +14,19 @@ const Register = () => {
 
   async function registerUser(event) {
     event.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!emailRegex.test(email)) {
+      alert('Invalid email format');
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      alert('Password must be at least 8 characters long and contain at least one letter and one number');
+      return;
+    }
+
     const formdata = {
       name,
       email,

@@ -38,6 +38,26 @@ const Sregister = () => {
 
   async function registerUser(event) {
     event.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
+
+    if (!emailRegex.test(email)) {
+      alert('Invalid email format');
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      alert('Password must be at least 8 characters long and contain at least one letter and one number');
+      return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+      alert('Invalid phone number. It must be 10 digits and start with 6, 7, 8, or 9');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:1337/api/sregister', {
         method: 'POST',
