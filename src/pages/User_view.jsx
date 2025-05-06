@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const User_view = () => {
   const [sellers, setSellers] = useState([]);
   const [mounted, setMounted] = useState(false);
+  const [type,setType] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -18,6 +19,7 @@ const User_view = () => {
         const data = await response.json();
         if (data.status === 'ok') {
           setSellers(data.sellers);
+          setType(data.type);
         } else {
           alert(data.error);
         }
@@ -70,6 +72,7 @@ const User_view = () => {
             </svg>
             Nearest Providers
           </button>
+          {type=='user'?(
           <button
             onClick={handleLogout}
             className="bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 px-6 rounded-xl shadow-lg hover:shadow-xl 
@@ -80,6 +83,14 @@ const User_view = () => {
             </svg>
             Logout
           </button>
+          ):
+          (
+            <a href='/Seller_view' className='bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 px-6 rounded-xl shadow-lg hover:shadow-xl 
+            transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 flex items-center'
+            >
+              back
+            </a>
+          )}
         </div>
 
         {sellers.length === 0 ? (
