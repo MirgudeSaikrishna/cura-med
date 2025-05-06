@@ -113,7 +113,14 @@ const Seller_view = () => {
                   </svg>
                   Add Product
                 </button>
-                
+                <a href="/User_view" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 px-6 rounded-xl
+                shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0
+                flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+                  </svg>
+                  View Shop
+                </a>
                 <button
                   onClick={handleLogout}
                   className="bg-gradient-to-r from-pink-500 to-red-500 text-white py-2 px-6 rounded-xl
