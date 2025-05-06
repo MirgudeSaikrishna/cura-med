@@ -10,6 +10,8 @@ const Sregister = () => {
   const [mounted, setMounted] = useState(false);
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
   const [status, setStatus] = useState('');
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +36,49 @@ const Sregister = () => {
         setStatus('Unable to retrieve your location');
       }
     );
+  };
+
+  const sendOtp = async () => {
+    try {
+      const response = await fetch('http://localhost:1337/api/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+
+      if (data.status === 'ok') {
+        alert('OTP sent to your email');
+        setOtpSent(true);
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      const response = await fetch('http://localhost:1337/api/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await response.json();
+
+      if (data.status === 'ok') {
+        alert('Email verified successfully');
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+    }
   };
 
   async function registerUser(event) {
@@ -149,6 +194,27 @@ const Sregister = () => {
             />
             <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-500 to-green-500 transform origin-left scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 w-full"></div>
           </div>
+          
+          <button onClick={sendOtp} className="w-full bg-teal-100 text-teal-700 py-2 px-4 rounded-lg hover:bg-teal-200 transition-all duration-300">
+            Send OTP
+          </button>
+
+          {otpSent && (
+            <div className="group relative">
+              <input 
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                type="text"
+                placeholder="Enter OTP"
+                required
+                className="w-full px-4 py-3 bg-green-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300 placeholder-gray-400"
+              />
+              <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-500 to-green-500 transform origin-left scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 w-full"></div>
+              <button onClick={verifyOtp} className="w-full bg-teal-100 text-teal-700 py-2 px-4 rounded-lg hover:bg-teal-200 transition-all duration-300 mt-2">
+                Verify OTP
+              </button>
+            </div>
+          )}
           
           <div className="group relative">
             <input 
