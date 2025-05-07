@@ -17,6 +17,9 @@ const Nearest=()=>{
                 const data=await response.json();
                 setLoading(false);
                 if(data.status==='ok'){
+                    if(data.sellers.length===0){
+                        alert('No providers found');
+                    }
                     setSellers(data.sellers);
                 }else{
                     alert(data.error);
