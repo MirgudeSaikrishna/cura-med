@@ -19,12 +19,11 @@ const Uproduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  // const shopName = localStorage.getItem('shopName');
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentProducts, setCurrentProducts] = useState([]);
-  const [productsPerPage] = useState(6);
+  const [productsPerPage] = useState(1); // Default products per page
   const [location, setLocation] = useState(null); 
   const [searchdata, setSearchdata] = useState('');
+  const [totalPages, setTotalPages] = useState(1);
   const {shopName}=useParams();
 
   useEffect(() => {
@@ -32,21 +31,22 @@ const Uproduct = () => {
     async function getProducts() {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:1337/api/products/${shopName}`, {
-          method: 'GET',
-          headers: {
-            'x-access-token': localStorage.getItem('token'),
-            // 'shop-name': shopName,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:1337/api/products/${shopName}?page=${currentPage}&limit=${productsPerPage}&search=${encodeURIComponent(searchdata)}`,
+          {
+            method: 'GET',
+            headers: {
+              'x-access-token': localStorage.getItem('token'),
+            },
+          }
+        );
         const data = await response.json();
         if (data.status === 'ok') {
-          if (data.products.length === 0) {
-            alert('No products found');
-          }
           setProducts(data.products);
           setLocation(data.location);
+          setTotalPages(data.pagination?.totalPages || 1);
         } else {
+          setProducts([]);
           alert(data.error);
         }
       } catch (error) {
@@ -56,27 +56,7 @@ const Uproduct = () => {
       }
     }
     getProducts();
-  }, [shopName]);
-
-  function searchProducts(searchdata) {
-    searchdata = searchdata.toLowerCase();
-    return function(product) {
-      return product.name.toLowerCase().includes(searchdata) || !searchdata;
-    };
-  }
-
-  useEffect(() => {
-    const filteredProducts = products.filter(searchProducts(searchdata));
-    const lastPostIndex = currentPage * productsPerPage;
-    const firstPostIndex = lastPostIndex - productsPerPage;
-    setCurrentProducts(filteredProducts.slice(firstPostIndex, lastPostIndex));
-  }, [currentPage, products, searchdata, productsPerPage]);
-
-  const pageCount = Math.ceil(products.filter(searchProducts(searchdata)).length / productsPerPage);
-  const pageNumbers = [];
-  for (let i = 1; i <= pageCount; i++) {
-    pageNumbers.push(i);
-  }
+  }, [shopName, currentPage, productsPerPage, searchdata]);
 
   const handleBack = () => {
     document.getElementById('uproduct-container').classList.add('scale-0', 'opacity-0');
@@ -85,6 +65,24 @@ const Uproduct = () => {
       window.location.href = '/User_view';
     }, 600);
   };
+
+  // Pagination logic
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 4) pages.push('...');
+      for (let i = Math.max(2, currentPage - 2); i <= Math.min(totalPages - 1, currentPage + 2); i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 3) pages.push('...');
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+  const pageNumbers = getPageNumbers();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-blue-300 to-teal-200 p-6 overflow-hidden">
@@ -154,7 +152,7 @@ const Uproduct = () => {
             <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mb-4"></div>
             <p className="text-gray-600">Loading products...</p>
           </div>
-        ) : currentProducts.length === 0 ? (
+        ) : products.length === 0 ? (
           <div className="text-center py-16">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -164,7 +162,7 @@ const Uproduct = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {currentProducts.map((product) => (
+            {products.map((product) => (
               <div 
                 key={product._id}
                 className="bg-gradient-to-br from-blue-50 to-teal-50 rounded-2xl overflow-hidden shadow-lg 
@@ -217,7 +215,7 @@ const Uproduct = () => {
         )}
 
         {/* Pagination */}
-        {!loading && pageCount > 1 && (
+        {(!loading && totalPages > 1 )&& (
           <div className="flex justify-center mt-8 space-x-2">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -232,24 +230,28 @@ const Uproduct = () => {
               </svg>
             </button>
             
-            {pageNumbers.map((number) => (
-              <button
-                key={number}
-                onClick={() => setCurrentPage(number)}
-                className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 
-                ${currentPage === number 
-                  ? 'bg-gradient-to-r from-teal-500 to-green-500 text-white shadow-md' 
-                  : 'bg-teal-50 text-teal-600 hover:bg-teal-100'}`}
-              >
-                {number}
-              </button>
-            ))}
+            {pageNumbers.map((number, idx) =>
+              number === '...' ? (
+                <span key={idx} className="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+              ) : (
+                <button
+                  key={number}
+                  onClick={() => setCurrentPage(number)}
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 
+                  ${currentPage === number 
+                    ? 'bg-gradient-to-r from-teal-500 to-green-500 text-white shadow-md' 
+                    : 'bg-teal-50 text-teal-600 hover:bg-teal-100'}`}
+                >
+                  {number}
+                </button>
+              )
+            )}
             
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, pageCount))}
-              disabled={currentPage === pageCount}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
               className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 
-              ${currentPage === pageCount 
+              ${currentPage === totalPages
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                 : 'bg-teal-100 text-teal-600 hover:bg-teal-200'}`}
             >

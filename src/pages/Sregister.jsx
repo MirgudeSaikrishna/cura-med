@@ -60,26 +60,26 @@ const Sregister = () => {
     }
   };
 
-  const verifyOtp = async () => {
-    try {
-      const response = await fetch('http://localhost:1337/api/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await response.json();
+  // const verifyOtp = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:1337/api/verify-otp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email, otp }),
+  //     });
+  //     const data = await response.json();
 
-      if (data.status === 'ok') {
-        alert('Email verified successfully');
-      } else {
-        alert(data.error);
-      }
-    } catch (error) {
-      console.error('Error verifying OTP:', error);
-    }
-  };
+  //     if (data.status === 'ok') {
+  //       alert('Email verified successfully');
+  //     } else {
+  //       alert(data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error verifying OTP:', error);
+  //   }
+  // };
 
   async function registerUser(event) {
     event.preventDefault();
@@ -195,11 +195,11 @@ const Sregister = () => {
             <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-500 to-green-500 transform origin-left scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 w-full"></div>
           </div>
           
-          <button onClick={sendOtp} className="w-full bg-teal-100 text-teal-700 py-2 px-4 rounded-lg hover:bg-teal-200 transition-all duration-300">
+          {/* <button onClick={sendOtp} className="w-full bg-teal-100 text-teal-700 py-2 px-4 rounded-lg hover:bg-teal-200 transition-all duration-300">
             Send OTP
-          </button>
+          </button> */}
 
-          {otpSent && (
+          {/* {otpSent && (
             <div className="group relative">
               <input 
                 value={otp}
@@ -214,7 +214,7 @@ const Sregister = () => {
                 Verify OTP
               </button>
             </div>
-          )}
+          )} */}
           
           <div className="group relative">
             <input 
