@@ -20,7 +20,7 @@ const Uproduct = () => {
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(1); // Default products per page
+  const [productsPerPage] = useState(6); // Default products per page
   const [location, setLocation] = useState(null); 
   const [searchdata, setSearchdata] = useState('');
   const [totalPages, setTotalPages] = useState(1);
@@ -55,6 +55,7 @@ const Uproduct = () => {
         setLoading(false);
       }
     }
+    window.scrollTo({top:0, behavior: 'smooth' });
     getProducts();
   }, [shopName, currentPage, productsPerPage, searchdata]);
 
@@ -201,12 +202,6 @@ const Uproduct = () => {
                     group-hover:opacity-100 transition-opacity duration-300"></span>
                     <span className="absolute left-0 w-12 h-full bg-white opacity-10 transform -skew-x-20 
                     transition-transform duration-700 group-hover:translate-x-full"></span>
-                    <span className="relative flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                      Add to Cart
-                    </span>
                   </button>
                 </div>
               </div>

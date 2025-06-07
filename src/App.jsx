@@ -1,5 +1,6 @@
 import React from 'react'
 import {BrowserRouter,Routes,Route} from "react-router-dom"
+import HomePage from './pages/HomePage'
 import BorS from './pages/BorS'
 import Register from './pages/register'
 import Sregister from './pages/Sregister'
@@ -14,7 +15,8 @@ const App=()=>{
     return(
         <BrowserRouter>
             <Routes>
-                    <Route path="/" element={<BorS/>}/>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="/home" element={<BorS/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/Sregister" element={<Sregister/>}/>
                     <Route path="/login" element={<Login/>}/>

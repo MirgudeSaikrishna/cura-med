@@ -57,7 +57,7 @@ const Register = () => {
   const handleBackNavigation = () => {
     document.getElementById('register-container').classList.add('scale-0', 'opacity-0');
     setTimeout(() => {
-      navigate('/');
+      navigate('/home');
     }, 600);
   };
 

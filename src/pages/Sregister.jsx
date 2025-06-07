@@ -38,27 +38,27 @@ const Sregister = () => {
     );
   };
 
-  const sendOtp = async () => {
-    try {
-      const response = await fetch('http://localhost:1337/api/send-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
+  // const sendOtp = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:1337/api/send-otp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email }),
+  //     });
+  //     const data = await response.json();
 
-      if (data.status === 'ok') {
-        alert('OTP sent to your email');
-        setOtpSent(true);
-      } else {
-        alert(data.error);
-      }
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-    }
-  };
+  //     if (data.status === 'ok') {
+  //       alert('OTP sent to your email');
+  //       setOtpSent(true);
+  //     } else {
+  //       alert(data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending OTP:', error);
+  //   }
+  // };
 
   // const verifyOtp = async () => {
   //   try {
@@ -139,7 +139,7 @@ const Sregister = () => {
   const handleBackNavigation = () => {
     document.getElementById('sregister-container').classList.add('scale-0', 'opacity-0');
     setTimeout(() => {
-      navigate('/');
+      navigate('/home');
     }, 600);
   };
 
